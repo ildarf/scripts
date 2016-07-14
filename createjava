@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "public class $1 {
+	
+}" > $1.java && d kate $1.java

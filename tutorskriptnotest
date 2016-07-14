@@ -1,0 +1,68 @@
+#!/bin/sh
+
+startdir=$(pwd)
+
+unzip -qq Export_Abgabe.zip
+rm Export_Abgabe.zip
+
+remove_spaces() {
+	# this function removes spaces in files/dirs with spaces in name
+	for i in $1*' '*;
+	do
+		mv "$i" `echo $i | sed -e 's/ /_/g'`;
+	done
+}
+
+remove_spaces
+
+# now remove them again, but in every name directory
+for namedir in $(ls -d */); 
+do
+	remove_spaces $namedir/
+
+	# in every directory in every name directory
+	# unzip zipfile & remove zipfile
+	for taskdir in $(ls $namedir);
+	do
+		zipfile=$(ls $namedir/$taskdir)
+		if [ "${zipfile##*.}" = "zip" ]
+		then
+			unzip -q $namedir/$taskdir/$zipfile -d $namedir/$taskdir/
+			rm $namedir/$taskdir/$zipfile
+		fi
+
+		# remove trash
+		rm -r $namedir/$taskdir/__MACOSX 2>/dev/null
+		rm -r $namedir/$taskdir/*.class 2>/dev/null
+		rm -r $namedir/$taskdir/untitled* 2>/dev/null
+
+		# rename abgabe.txt if existing
+		if [ -f $namedir/$taskdir/abgabe.txt ]
+		then
+			mv $namedir/$taskdir/abgabe.txt $namedir/$taskdir/11-$taskdir.txt
+		fi
+
+		# move content of each taskdir one level up
+		mv $namedir/$taskdir/* $namedir/
+
+		# remove every taskdir in each namedir
+		rm -rf $namedir/$taskdir 2>/dev/null
+	done
+
+	cd $namedir
+
+	# flat directory hierarchy
+	for file in `find . -mindepth 2 -type f`
+	do
+		mv $file $startdir/$namedir
+	done
+	for dir in `find . -mindepth 1 -type d`
+	do
+		rm -r $dir
+	done
+
+	# copy additional resource files to each namedir
+	cp -r /home/ildar/uni/info1/tutorkram/stdlibs/*.java .
+
+	cd $startdir
+done

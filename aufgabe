@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]
+then
+	echo 'Usage: aufgabe command files...'
+	exit 0
+fi
+
+command=$1
+shift
+
+for namedir in $(ls -d */); 
+do
+	testfiles=""
+	for file in $*
+	do
+		testfiles+="$namedir$file "
+	done
+	$command $testfiles
+done

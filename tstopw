@@ -1,0 +1,5 @@
+#!/bin/bash
+
+tmux split-window -v -l 2
+tmux send-keys 'stopw' Enter
+tmux select-pane -U

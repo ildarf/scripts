@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# if [ $# -eq 0 ]
+# then
+# 	date=`date +%d'.'%m'.'%g`
+# 	time=`date +%R`
+# fi
+# 
+# if [ "$1" =~ "*:*" ]
+# then
+# 	date=`date +%d'.'%m'.'%g`
+# 	time=$3
+# 	echo $date $time
+# else
+# 	date=$3
+# 	time=$4
+# fi
+# 
+str='some text with : in it'
+if [[ $str == *:* ]]
+then
+	echo "it contains a :"
+fi

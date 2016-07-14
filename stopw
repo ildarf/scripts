@@ -1,0 +1,19 @@
+#!/bin/bash
+
+starttime=$(( $(date +%s%N)/1000000 ))
+read
+stoptime=$(( $(date +%s%N)/1000000 ))
+
+msec=$(( $stoptime - $starttime ))
+
+
+ms=$(( $msec % 1000 ))
+x=$(( $msec / 1000 ))
+sec=$(( $x % 60 ))
+x=$(( $x / 60 ))
+min=$(( $x % 60 ))
+x=$(( $x / 60 ))
+hrs=$(( $x % 24 ))
+x=$(( $x / 24 ))
+
+printf "%02d:%02d:%02d:%03d\n" $hrs $min $sec $ms

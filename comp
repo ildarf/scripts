@@ -1,0 +1,11 @@
+#!/bin/bash
+D=`pwd`
+cp $1.asm /home/ildar/nasm/
+cd /home/ildar/nasm/
+nasm -f elf $1.asm
+gcc -g -o $1 $1.o driver.c asm_io.o
+rm $1.asm
+rm $1.o
+mv $1 $D
+cd $D
+./$1

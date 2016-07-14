@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#create a script in ~/scripts, set permissions, run vim to edit
+
+scriptname=$1
+
+printf "#!/bin/bash\n\nif [ \$# -eq 0 -o \"\$1\" = \"--help\" -o \"\$1\" = \"-h\" ]\nthen\n\techo 'Usage: $scriptname'\n\texit 0\nfi\n\nget_args()\n{\n\tfor i in \$*\n\tdo\n\t\tif [ \"\$1\" = \"-h\" ]\n\t\tthen\n\t\techo 'Usage: $scriptname'\n\t\t\texit 0\n\t\tfi\n\tdone\n}\n\nget_args \$*\n" \
+> ~/scripts/$scriptname && chmod 755 ~/scripts/$scriptname && vim ~/scripts/$scriptname
+

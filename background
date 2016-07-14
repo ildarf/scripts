@@ -1,0 +1,11 @@
+#!/bin/bash
+# 
+# This script downloads some images, and resizes them properly
+# in a separate temp folder in the Pictures directory.
+# After that it copies/moves them into the directory above.
+
+cd /home/ildar/Pictures/temp
+wget $*
+mogrify -resize 500x\> -verbose *
+mogrify -resize x750\> -verbose *
+mv * /home/ildar/Pictures

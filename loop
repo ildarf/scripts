@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+	echo 'Usage: loop cmd sleeptime'
+	exit 0
+fi
+
+cmd=$1
+sleeptime=$2
+
+while : ;
+do
+	$cmd;
+	sleep $sleeptime;
+done
+

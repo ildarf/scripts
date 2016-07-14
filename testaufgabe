@@ -1,0 +1,43 @@
+#!/bin/bash
+
+testfile=$1
+catfile=$2
+test1="java $testfile"
+# test1="java $testfile 1"
+# test2="java $testfile 2"
+# test3="java $testfile 3"
+# test4="java $testfile 5"
+# test5="java $testfile 7"
+
+startdir=$(pwd)
+for namedir in $(ls -d */);
+do
+	cd $namedir
+	printf "\n:: testing $namedir ...\n"
+	if [ -f $testfile.java ]
+	then
+		printf "compile...\n"
+		javac $testfile.java
+
+		printf "$test1\n"
+		$test1 < ../$catfile
+
+# 		printf "$test2\n"
+# 		$test2
+# 
+# 		printf "$test3\n"
+# 		$test3
+# 
+# 		printf "$test4\n"
+# 		$test4
+# 
+# 		printf "$test5\n"
+# 		$test5
+	read
+
+		vim $testfile.java
+	else
+		printf "Not solved ...\n"
+	fi
+	cd $startdir
+done

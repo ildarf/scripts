@@ -1,0 +1,105 @@
+#!/bin/bash
+
+if [ $# -eq 0 -o "$1" = "-h" ]
+then
+	echo 'Usage: table -r rows [-c cols][-ch cellheight][-cw cellwidth]'
+	echo 'Usage: table rows [cols [cellheight [cellwidth]]]'
+	exit 0
+fi
+
+cellheight=1
+cellwidth=2
+cols=1
+nb="false"
+
+get_args()
+{
+	for i in $*
+	do
+		if [ "$1" = "-r" ]
+		then
+			rows=$2
+			shift 2
+		elif [ "$1" = "-c" ]
+		then
+			cols=$2
+			shift 2
+		elif [ "$1" = "-cw" ]
+		then
+			cellwidth=$2
+			shift 2
+		elif [ "$1" = "-ch" ]
+		then
+			cellheight=$2
+			shift 2
+		elif [ "$1" = "--no-rowborder" -o "$1" = "-nb" ]
+		then
+			nb="true"
+			shift 1
+		elif [ "$1" = "--prefix" -o "$1" = "-pr" ]
+		then
+			prefix="$2"
+		elif [ "$1" -eq "$1" ] 2> /dev/null
+		then
+			rows=$1
+			if [ "$2" -eq "$2" ] 2> /dev/null
+			then
+				cols=$2
+				if [ "$3" -eq "$3" ] 2> /dev/null
+				then
+					cellheight=$3
+					if [ "$4" -eq "$4" ] 2> /dev/null
+					then
+						cellwidth=$4
+					fi
+				fi
+			fi
+			break;
+		fi
+	done
+}
+
+draw_row_border()
+{
+	if [ "$nb" != "true" ]
+	then
+		printf "$prefix+"
+		for cell in `seq 1 $cols`
+		do
+			for charspace in `seq 1 $cellwidth`
+			do
+				printf "-"
+			done
+			printf "+"
+		done
+		printf "\n"
+	fi
+}
+
+draw_row_space()
+{
+	for linespace in `seq 1 $cellheight`
+	do
+		printf "$prefix|"
+		for cell in `seq 1 $cols`
+		do
+			for charspace in `seq 1 $cellwidth`
+			do
+				printf " "
+			done
+			printf "|"
+		done
+		printf "\n"
+	done
+}
+
+get_args $*
+
+# echo $cols $rows $cellwidth $cellheight $nb
+
+draw_row_border
+for row in `seq 1 $rows`
+do
+	draw_row_space
+	draw_row_border
+done

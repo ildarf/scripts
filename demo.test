@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ ! -s file -a -f file ]
+then
+	echo jo
+else
+	echo ne
+fi

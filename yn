@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Question for [y/n] for returning either 0 or 1
+echo 'go on, [Y/n]?'
+read -s -n 1 key
+if [[ $key = "" ]]; then
+  exit 0
+else 
+  exit 1
+fi

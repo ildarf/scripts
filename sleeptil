@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+	echo "Usage: `basename $0` hh:mm"
+	exit 1
+fi
+
+sleep $(( $(date --date=$1 +%s) - $(date +%s) ))

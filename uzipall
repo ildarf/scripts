@@ -1,0 +1,28 @@
+#!/bin/bash
+
+uzip() {
+	for zip in `ls *.zip`
+	do
+		unzip -q -d ${zip%.*} $zip
+	done
+}
+
+rmzip() {
+	for zip in `ls *.zip`
+	do
+		rm $zip
+	done
+}
+
+rmopt=$1
+shift	
+
+case "$rmopt" in
+	"-rm")
+		rmzip;;
+	"+rm")
+		uzip
+		rmzip;;
+	"")
+		uzip;;
+esac

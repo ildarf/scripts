@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# lp -o 'landscape cpi=10 lpi=6' -
+# lp -o 'landscape cpi=11 lpi=7' -
+# lp -o 'landscape cpi=13 lpi=8' -
+lp -o 'landscape cpi=15 lpi=9' -
+# lp -o 'landscape cpi=16 lpi=10' -

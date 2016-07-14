@@ -1,0 +1,33 @@
+#!/bin/bash
+
+src=$1
+dst=$2
+
+if [ $# -eq 2 ];
+then
+	# search a connection today from now
+	date=`date +%d'.'%m'.'%g`
+ 	time=`date +%R`
+else
+	# search a connection today from certain time
+	if [[ $3 == *:* || $3 -eq $3 ]] 2> /dev/null
+	then
+		date=`date +%d'.'%m'.'%g`
+		time=$3
+	# if third param contains a dot, it must be a date
+	elif [[ $3 == *.* ]]
+	then
+		date=$3
+		if [[ -n $4 ]]
+		then
+			time=$4
+		else
+			# time = now
+			time=`date +%R`
+		fi
+	fi
+fi
+
+echo $src $dst $date $time
+
+chromium "http://reiseauskunft.bahn.de/bin/query.exe/dn?revia=yes&existOptimizePrice=1&country=DEU&dbkanal_007=L01_S01_D001_KIN0001_qf-bahn_LZ003&ignoreTypeCheck=yes&S=$src&REQ0JourneyStopsSID=&REQ0JourneyStopsS0A=7&Z=$dst&REQ0JourneyStopsZID=&REQ0JourneyStopsZ0A=7&trip-type=single&date=$date&time=$time&timesel=depart&returnTimesel=depart&optimize=0&journeyProducts=1016&travelProfile=-1&adult-number=1&children-number=0&infant-number=0&tariffTravellerType.1=E&tariffTravellerReductionClass.1=0&tariffTravellerAge.1=&qf-trav-bday-1=&tariffTravellerReductionClass.2=0&tariffTravellerReductionClass.3=0&tariffTravellerReductionClass.4=0&tariffTravellerReductionClass.5=0&tariffClass=2&start=1&qf.bahn.button.suchen="

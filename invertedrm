@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rm -rfv $(ls --color=never | grep -v $1)

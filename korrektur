@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# chromium 'https://auas.cs.uni-duesseldorf.de/abgabe/employee/login'
+# d evince /home/ildar/uni/info1/tutorkram/Ubung\ 2/blatt2.pdf
+# d evince /home/ildar/uni/info1/tutorkram/Ubung\ 2/loesung2.pdf
+# tmux split-window -v -l 4
+tmux select-pane -t 0
+tmux send-keys 'cd /home/ildar/uni/info1/tutorkram' Enter
+tmux send-keys 'd geany /home/ildar/uni/info1/tutorkram/cp /home/ildar/uni/info1/tutorkram/notes /home/ildar/uni/info1/tutorkram/ablauf' Enter
+tmux send-keys 'ranger-cd' Enter
+tmux split-window -v # -c '/home/ildar/uni/info1/korrekturen' # ranger-cd /home/ildar/uni/info1/korrekturen08 /home/ildar/uni/info1/tutorkram

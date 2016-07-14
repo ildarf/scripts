@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ctrl_c()
+{
+	printf "\ntrapped your stupidity\n"
+	printf "exiting ...\n"
+	exit 1
+}
+
+# trap keyboard interrupt, run ctrl_c function
+trap ctrl_c INT
+
+# main loop
+for i in `seq 1 5`;
+do
+	sleep 1
+	echo -n "."
+done
+

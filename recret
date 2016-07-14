@@ -1,0 +1,39 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+	echo 'Usage: recret http_username http_password dirs_to_cut url'
+	exit 0
+fi
+
+if [ $# -ne 4 ]
+then
+	echo '4 Params needed!'
+	echo 'Usage: recret http_username http_password dirs_to_cut url'
+	exit 0
+fi
+
+username=$1
+password=$2
+cutdirs=$3
+url=$4
+
+# echo $username $password $cutdirs $url
+
+wget \
+	\ #--timestamping \
+	\ #--no-directories \
+	\ #-q \
+	\ #--no-verbose \
+	--no-clobber \
+	--execute robots=off \
+	--no-parent \
+	--no-host-directories \
+	--recursive \
+	--reject "*index.html*" \
+	--show-progress \
+	\ # --user=$username --password=$password \
+	--cut-dirs $cutdirs \
+	$url
+
+echo 'done'

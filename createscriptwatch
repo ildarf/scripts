@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+	echo 'Usage: createscriptwatch'
+	exit 0
+fi
+
+ls `which $1` | entr -c $*

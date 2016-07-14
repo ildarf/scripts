@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ -z "$2" ]
+then
+	LINES=10
+else
+	LINES=$1
+fi
+
+wget -q --output-document=- "http://vrrf.finalrewind.org/duesseldorf/Universit%C3%A4t%20S%C3%BCdost.html?no_lines=$LINES&frontend=html" |\
+	grep -e line -e dest -e time |\
+	sed -e 's/<div class=\"line\"> //' -e 's/<div class=\"dest\"> //' -e 's/<div class=\"time"> //' -e 's/ <\/div>//' |\
+	tr '\n' '\t' |\
+	sed -e 's/min/min\n/g' -e 's/sofort/sofort\n/g' |\
+	sed -e 's/^[ \t]*//' |\
+	column -ts $'\t'

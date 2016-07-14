@@ -1,0 +1,79 @@
+#!/bin/bash
+
+shrink() {
+	# if first argument is -d, set different destination directory
+	printf ":: shrinking images ...\n"
+	if [ "$1" = "-d" ]
+	then
+		DEST_DIR="$2"
+		shift 2
+	else
+		DEST_DIR="shrinked_$1"
+	fi
+
+	if [ "$1" -eq "$1" ] 2> /dev/null
+	then
+		SHRINK_SIZE=$1
+		shift
+	else
+		echo "size must be an integer value"
+		exit 0
+	fi
+
+	if [ ! -d $DEST_DIR ]
+	then
+		mkdir $DEST_DIR
+	fi
+
+	count=1
+	for f in $*
+	do
+		convert $f -resize $SHRINK_SIZE'x'$SHRINK_SIZE\> -auto-orient -verbose $DEST_DIR/$f
+		printf "%d/%d\t" "$count" "$#"
+		(( count++ ))
+	done
+	printf "done\n"
+}
+
+if [ $# -le 2 ]
+then
+	echo 'Usage: shrinker [-gif delay] [-d dir] size input-file...'
+	exit 0
+fi
+
+# if first argument is -gif, save delay in DELAY
+if [ "$1" = "-gif" ]
+then
+	printf ":: creating gif ...\n"
+
+	if [ "$2" -eq "$2" ] 2> /dev/null
+	then
+		DELAY=$2
+		shift 2
+	else
+		echo 'gif option requires an integer argument'
+		exit 0
+	fi
+	shrink -d temp $*
+
+	if [ ! -d gifs ]
+	then
+		mkdir gifs
+	fi
+	convert -delay $DELAY -loop 0 temp/* gifs/${2%.*}.gif
+	printf ":: gif created!\n"
+
+	# printf "tidying up..."
+	if [ ! -d shrinked_$SHRINK_SIZE ]
+	then
+		mv temp shrinked_$SHRINK_SIZE
+	else
+		mv temp/* shrinked_$SHRINK_SIZE
+	fi
+	rm -rf temp
+	# printf " done\n"
+else
+	# only shrink pics
+	shrink $*
+fi
+

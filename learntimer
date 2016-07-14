@@ -1,0 +1,118 @@
+#!/bin/bash
+
+# if [ "$1" = "atab" ]
+# then
+# 	switch=1
+# 	shift
+# fi
+
+
+# if first param is a integer, so count down that number instead
+# of counting up the learning sessions
+if [ "$1" -eq  "$1" ] 2> /dev/null
+then
+	sessionstodo=$1
+	shift
+fi
+
+count=0
+subject=$1
+learnlog=~/.logs/learnsessions.log
+timerwindow=`tmux display-message -p '#I'`
+timerpane=`tmux display-message -p '#P'`
+
+write_and_exit()
+{
+	printf "total sessions: $count\n"
+	if [ -n "$subject" ]
+	then
+		printf "save sessions?\n"
+		read -s -n 1 key
+		if [ "$key" != "" ]
+		then
+			printf "no, please don't save\n"
+		else
+			printf "yes, save them\n"
+			inc $subject $learnlog $count
+		fi
+	fi
+	exit 0
+}
+
+ctrl_c()
+{
+	printf "aborting ...\n"
+	write_and_exit
+}
+
+question()
+{
+	printf "$1?\n"
+	read -s -n 1 key
+	if [[ $key != "" ]];
+	then
+		write_and_exit
+	fi
+}
+
+learn()
+{
+	beep
+# 	if [ $switch ]
+# 	then
+# 		xdotool key Alt+Tab
+# 	fi
+	tmux select-window -p 2> /dev/null
+	# notify-send learning $subject
+	printf "learn ...\n"
+	#sleep 3
+	sleep 25m
+	wmctrl -a xterm
+	tmux select-window -t $timerwindow
+	tmux select-pane -t $timerpane
+	((count++))
+	printf "done sessions: $count\n"
+	beep
+	beep
+}
+
+pause()
+{
+	beep
+	# notify-send pause
+	printf "pause ...\n"
+	#sleep 2
+	sleep 5m
+	beep
+}
+
+trap ctrl_c INT
+
+if [ -n "$subject" ]
+then
+	echo learning $subject
+fi
+
+if [[ -z $sessionstodo ]]
+then
+	while : ;
+	do
+		learn
+		question "pause?"
+		pause
+		question "learn?"
+	done
+else
+	for i in `seq $sessionstodo -1 1`
+	do
+		printf "sessions left: $i\n"
+		question "learn?"
+		learn
+		if [[ $i -ne 1 ]]
+		then
+			question "pause?"
+			pause
+		fi
+	done
+	write_and_exit
+fi

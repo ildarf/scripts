@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# tmux split-window -c \#{pane_current_path} -p 20 "source ~/.zshrc" 
+tmux new-window
+# tmux send-keys C-c
+tmux send-keys "source ~/.zshrc" Enter
+sleep 0.6
+tmux kill-window

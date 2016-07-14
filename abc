@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# create a new file in ~/.abc folder named after first param
+# put the alphabet in it
+# save new abc-alias in zsh.conf
+# open it
+
+

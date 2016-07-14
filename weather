@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# inxi -xxw | grep -e Weather -e Pressure | sed -e 's/Conditions/\n\tConditions/' -e 's/Wind/\n\tWind/' -e 's/Humidity/\n\tHumidity/' -e 's/Time.*//' -e 's/         //' -e 's/:/:\t/g' | column  -ts $'\t'
+
+if [ -n "$1" ]
+then
+	city=$1
+else
+	city=Düsseldorf
+fi
+
+loop "curl -4 http://wttr.in/$city" 60

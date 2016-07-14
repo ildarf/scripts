@@ -1,0 +1,10 @@
+#!/bin/bash
+
+orig_pane=$(tmux display-message -p '#P')
+
+tmux split-window -h
+tmux select-pane -t $orig_pane
+tmux split-window -v
+tmux select-pane -R
+tmux split-window -v
+# tmux select-pane -t 0

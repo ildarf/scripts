@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# this script needs to be revised. 
+# the idea of the script was that it should download a whole homepage directory with its content,yeah
+
+wget $1\
+  --recursive \
+  --no-clobber \
+  --page-requisites \
+  --html-extension \
+#  --convert-links \
+  #--restrict-file-names=windows \
+  --domains $1
+  

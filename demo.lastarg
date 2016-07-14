@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+	echo 'Usage: tscr args ...'
+	exit 0
+fi
+
+# echo count of args
+echo "$#" 
+
+# echo last arg
+echo "${!#}" 
+
+# echo last arg without extension
+echo "${!#%.*}"
+
+# echo last args extension
+echo "${!###*.}"

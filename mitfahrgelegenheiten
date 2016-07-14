@@ -1,0 +1,11 @@
+#!/bin/bash
+
+chromium "https://www.fahrtfinder.net/mitfahrgelegenheit/K%C3%B6ln/Halle-Saale/10.03.2016"
+chromium "https://www.fahrtfinder.net/mitfahrgelegenheit/Essen/Halle-Saale/10.03.2016"
+chromium "https://www.fahrtfinder.net/mitfahrgelegenheit/D%C3%BCsseldorf/Halle-Saale/10.03.2016"
+chromium "https://www.fahrtfinder.net/mitfahrgelegenheit/Dortmund/Halle-Saale/10.03.2016"
+chromium "https://www.fahrtfinder.net/mitfahrgelegenheit/Paderborn/Halle-Saale/10.03.2016"
+chromium "https://www.fahrtfinder.net/mitfahrgelegenheit/Bochum/Halle-Saale/10.03.2016"
+chromium "https://www.fahrtfinder.net/mitfahrgelegenheit/Hagen/Halle-Saale/10.03.2016"
+chromium "https://www.fahrtfinder.net/mitfahrgelegenheit/Wuppertal/Halle-Saale/10.03.2016"
+chromium "https://www.fahrtfinder.net/mitfahrgelegenheit/Hamm/Halle-Saale/10.03.2016"

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]
+then
+	echo 'Usage: chainkey cmd keys'
+	exit 0
+fi
+
+cmd=$1
+keys=$2
+
+for i in `seq 0 $((${#keys}-1))`
+do
+	char=${keys:$i:1}
+	i=$char
+	printf "<keybind key=\"$i\">\n"
+done
+printf "<action name=\"Execute\">\n<command>$cmd</command>\n</action>\n"
+for i in `seq $((${#keys}-1)) -1 0`
+do
+	printf "</keybind>\n"
+done

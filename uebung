@@ -1,0 +1,4 @@
+#!/bin/bash
+
+tmux split-window -v -l 15
+tmux send-keys 'notes.info1' Enter

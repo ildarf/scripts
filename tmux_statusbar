@@ -1,0 +1,74 @@
+#!/bin/bash
+
+function printBar() {
+  local Value="$(( $1 / 10 ))"
+  local P=""
+  local C=""
+
+  case $Value in
+    0) P=" "; C="0";;
+    1) P=" "; C="32";;
+    2) P="▁"; C="32";;
+    3) P="▂"; C="32";;
+    4) P="▃"; C="33";;
+    5) P="▄"; C="33";;
+    6) P="▅"; C="33";;
+    7) P="▆"; C="31";;
+    8) P="▇"; C="31";;
+    9) P="█"; C="31";;
+    10) P=" "; C="41";;
+  esac
+
+  echo -ne "$P"
+#  echo -ne '\e['$C'm'$P'\e[0m'
+}
+
+function printHorizontalBar() {
+  local Value="$(( $1 / 3 ))"
+  local PC=""
+  local P=""
+  local C=""
+
+  for i in 1 2 3 4; do
+    local Cur=$(( $Value % 8 ))
+    if [ $Value -ge 8 ]; then
+      Cur=8
+    elif [ $Value -lt 0 ]; then
+      Cur=0
+    fi
+
+    Value=$(( $Value - 8 ))
+    case $Cur in
+      1) P="▏"; C="32";;
+      2) P="▎"; C="32";;
+      3) P="▍"; C="32";;
+      4) P="▌"; C="33";;
+      5) P="▋"; C="33";;
+      6) P="▊"; C="33";;
+      7) P="▉"; C="31";;
+      8) P="█"; C="31";;
+      *) P=" "; C="0";;
+    esac
+
+#     PC="$PC{$Cur}$P"
+     PC="$PC$P"
+  done
+
+#  echo -ne "$1 $Value $PC"
+  echo -ne "$PC"
+}
+
+#CPU="$(mpstat -u 2 1|tail -n1|sed -e 's/.*all *//;s/\..*//')"
+CPU=""
+FREE="$(free -k|tr '\n' ' '|sed -re 's/[\n\t ]+/ /g')"
+RAM_TOTAL="$(echo $FREE|cut -d' ' -f8)"
+RAM_USED=$(( $(echo $FREE|cut -d' ' -f9) - $(echo $FREE|cut -d' ' -f16) ))
+
+RAM="$(printHorizontalBar $(echo "scale=2; $RAM_USED / $RAM_TOTAL * 100"|bc|sed 's/\..*//') )"
+
+for i in $(mpstat -P ALL -u 2 1|grep -e Average -A 100|tail -n+3|sed 's/  */ /g'|cut -d' ' -f3|sed 's/\..*//'); do
+  CPU="${CPU}$(printBar $i)"
+done
+
+#
+/usr/bin/printf "CPU [%s] RAM [%-4s]" "$CPU" "$RAM"

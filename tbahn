@@ -1,0 +1,10 @@
+#!/bin/bash
+
+tmux split-window -v -l 7 "loop 'vrr uniost 5' 15" 
+tmux split-window -h "loop 'vrr unisued 5' 15" 
+tmux select-pane -U
+tmux split-window -v -l 8 "loop 'vrr suedpark 6' 15" 
+tmux split-window -h "loop 'vrr werstener 6' 15" 
+tmux select-pane -U
+tmux split-window -v -l 10 "loop 'vrr volks 8 10' 15" 
+tmux split-window -h "loop 'vrr bilks 8 10' 15" 

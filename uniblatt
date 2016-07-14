@@ -1,0 +1,91 @@
+#!/bin/bash
+
+echo ':: Rechnernetze'
+echo 'lade Folien ...'
+wget \
+	--timestamping \
+	\ #--no-clobber \
+	--quiet \
+	--show-progress \
+	--user=rechnernetze --password=wireshark1516 \
+	--directory-prefix=/home/ildar/uni/rechnernetze/folien \
+	https://wwwcn.cs.uni-duesseldorf.de/teaching/2015/rechnernetze/Kapitel{00..15}.pdf
+
+echo 'lade Blätter ...'
+wget \
+	--timestamping \
+	--quiet \
+	--show-progress \
+	--user=rechnernetze --password=wireshark1516 \
+	--directory-prefix=/home/ildar/uni/rechnernetze/blatt \
+	https://wwwcn.cs.uni-duesseldorf.de/teaching/2015/rechnernetze/blatt{01..15}.pdf
+
+echo 'lade Lösungen ...'
+wget \
+	--timestamping \
+	--quiet \
+	--show-progress \
+	--user=rechnernetze --password=wireshark1516 \
+	--directory-prefix=/home/ildar/uni/rechnernetze/loesung \
+	https://wwwcn.cs.uni-duesseldorf.de/teaching/2015/rechnernetze/loesung{01..15}.pdf
+echo 'done'
+
+# echo ':: Betriebssysteme'
+# echo 'lade Blätter ...'
+# wget \
+# 	--timestamping \
+# 	--quiet \
+# 	--show-progress \
+# 	--user=student --password=bs4student \
+# 	--directory-prefix=/home/ildar/uni/betriebssysteme/blatt/theoretisch \
+# 	https://coconucos.cs.uni-duesseldorf.de/lehre/ws_1516/bs/uebung/BS_Blatt_{01..15}.pdf
+# echo 'lade Praktische Übungen ...'
+# wget \
+# 	--timestamping \
+# 	--quiet \
+# 	--show-progress \
+# 	--user=student --password=bs4student \
+# 	--directory-prefix=/home/ildar/uni/betriebssysteme/blatt/praktisch \
+# 	https://coconucos.cs.uni-duesseldorf.de/lehre/ws_1516/bs/prak_uebung/BS_prakUebung_{01..15}.pdf
+# echo 'lade Lösungen ...'
+# wget \
+# 	--timestamping \
+# 	--quiet \
+# 	--show-progress \
+# 	--user=student --password=bs4student \
+# 	--directory-prefix=/home/ildar/uni/betriebssysteme/blatt/loesung \
+# 	https://coconucos.cs.uni-duesseldorf.de/lehre/ws_1516/bs/uebung/BS_Blatt_{01..15}_Loesung.pdf
+# echo 'lade Folien ...'
+# wget \
+# 	\ #--timestamping \
+# 	--no-clobber \
+# 	--execute robots=off \
+# 	--no-directories \
+# 	--recursive \
+# 	--accept "BS_K*.pdf" \
+# 	--show-progress \
+# 	-q \
+# 	--no-verbose \
+# 	--directory-prefix=/home/ildar/uni/betriebssysteme/folien \
+# 	--user=student --password=bs4student \
+# 	https://coconucos.cs.uni-duesseldorf.de/lehre/ws_1516/bs/vorlesung/
+# echo 'done'
+
+echo ':: Verteilte Systeme'
+wget \
+	\ #--timestamping \
+	--no-clobber \
+	--execute robots=off \
+	\ #--no-directories \
+	--no-parent \
+	--no-host-directories \
+	--cut-dirs 3 \
+	--recursive \
+	--reject "*index.html*" \
+	--show-progress \
+	-q \
+	--no-verbose \
+	--user=student --password=bs4student \
+	--directory-prefix=/home/ildar/uni/verteilte_sys/ \
+	https://coconucos.cs.uni-duesseldorf.de/lehre/ws_1516/gvs/
+echo 'done'

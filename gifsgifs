@@ -1,0 +1,27 @@
+#!/bin/bash
+shrinker -gif 10 640 _DSC{7340..7342}.JPG
+shrinker -gif 10 640 _DSC{7344..7364}.JPG
+shrinker -gif 10 640 _DSC{7388..7405}.JPG
+shrinker -gif 10 640 _DSC{7408..7428}.JPG
+shrinker -gif 10 640 _DSC{7435..7456}.JPG
+shrinker -gif 10 640 _DSC{7459..7465}.JPG
+shrinker -gif 10 640 _DSC{7472..7493}.JPG
+shrinker -gif 10 640 _DSC{7506..7529}.JPG
+shrinker -gif 10 640 _DSC{7530..7544}.JPG
+shrinker -gif 10 640 _DSC{7546..7549}.JPG
+shrinker -gif 10 640 _DSC{7550..7558}.JPG
+shrinker -gif 10 640 _DSC{7559..7567}.JPG
+shrinker -gif 10 640 _DSC{7568..7587}.JPG
+shrinker -gif 10 640 _DSC{7592..7596}.JPG
+shrinker -gif 10 640 _DSC{7597..7608}.JPG
+shrinker -gif 10 640 _DSC{7612..7624}.JPG
+shrinker -gif 10 640 _DSC{7630..7660}.JPG
+shrinker -gif 10 640 _DSC{7661..7669}.JPG
+shrinker -gif 10 640 _DSC{7673..7687}.JPG
+shrinker -gif 10 640 _DSC{7732..7767}.JPG
+shrinker -gif 10 640 _DSC{7782..7787}.JPG
+shrinker -gif 10 640 _DSC{7800..7827}.JPG
+shrinker -gif 10 640 _DSC{7828..7851}.JPG
+shrinker -gif 10 640 _DSC{7857..7867}.JPG
+shrinker -gif 10 640 _DSC{7858..7887}.JPG
+shrinker -gif 10 640 _DSC{7903..7922}.JPG

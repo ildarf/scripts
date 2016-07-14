@@ -1,0 +1,6 @@
+#!/bin/bash
+Count=$(tmux list-panes|wc -l)
+From=$(tmux display-message -p '#I')
+for i in $(seq 1 $Count); do
+  tmux join-pane -s ":${From}" -t "$1"
+done

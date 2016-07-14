@@ -1,0 +1,3 @@
+#!/bin/bash
+
+lp -o "media=a4 landscape number-up=2 number-up-layout=rlbt page-top=40 page-set=odd outputorder=reverse" $4 $3 $2 $1 

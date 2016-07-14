@@ -1,0 +1,4 @@
+#!/bin/bash
+
+tmux split-window -v -l 6
+tmux send-keys "loop weather 1800" Enter

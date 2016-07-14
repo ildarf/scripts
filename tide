@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# if [ $# -eq 0 -o "$1" = "-h" ]
+# then
+# 	echo 'Usage: testide'
+# 	 exit 0
+# fi
+
+tmux resize-pane -D 5
+tmux split-window -c '#{pane_current_path}' -p 25
+tmux split-window -h -c '#{pane_current_path}' -p 34
+tmux send-keys "clear" Enter
+tmux send-keys "runwatch $1"
+tmux select-pane -t :.-
+tmux send-keys "clear" Enter
+tmux send-keys "makewatch $1"
+tmux select-pane -t :.-
+tmux send-keys Enter
+tmux send-keys ":tabe $1" Enter

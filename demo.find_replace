@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# if [ $# -eq 0 -o "$1" = "--help" -o "$1" = "-h" ]
+# then
+# 	echo 'Usage: demo_find_replace'
+# 	exit 0
+# fi
+
+num=5
+
+increment()
+{
+	oldnum=`cut -d ' ' -f2`
+	while read a;
+	do
+		#echo ${a//abc/xyz}
+		#echo ${a//xyz/$num}
+		echo ${a//abc/$num}
+		#echo ${a//$num/abc}
+	done < $1 > $1.t
+
+	mv $1{.t,}
+}
+
+
+cat ~/file.txt
+increment ~/file.txt
+printf "=========\n"
+cat ~/file.txt

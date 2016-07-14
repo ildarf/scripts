@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# if [ $# -eq 0 -o "$1" = "--help" -o "$1" = "-h" ]
+# then
+# 	echo 'Usage: demo_find_replace'
+# 	exit 0
+# fi
+
+increment()
+{
+	num=$3
+	pattern=$2
+	file=$1
+	oldnum=`grep ^$pattern $file | cut -d ' ' -f2`
+	echo $oldnum
+	newnum=$((oldnum + $num))
+	sed -i "s/$2 $oldnum/$2 $newnum/" $file
+}
+
+
+cat ~/file.txt
+printf "=========\n"
+increment ~/file.txt bsys 3

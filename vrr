@@ -1,0 +1,125 @@
+#!/bin/bash
+
+# if no params omitted print short user information
+if [ $# -eq 0 ]
+then
+	echo "Usage: `basename $0` stop [lines] [offset]"
+	echo "Usage: `basename $0` help"
+	exit 1
+fi
+
+# if there is no lines-param (precise: if length of second param is zero),
+# then set lines to 10
+if [ -z "$2" ]
+then
+	LINES=10
+else
+	LINES=$2
+fi
+
+# same with the offset param
+if [ -z "$3" ] 
+then
+	OFFSET=0
+else
+	OFFSET=$3
+fi
+
+# simply prints the help dialogue
+help_dialogue()
+{
+		printf \
+"possible stops:
+	derendorfs
+	rather
+	mooren
+	oberbilk
+	werstener
+	hbf
+	suedpark
+	bilks
+	volks
+	unisuedost
+	unisued
+	uniost
+
+lines:
+means the lines shown like on a display of a stop.
+if no lines omitted, 10 lines are shown.
+
+offset:
+if you don't want to know when the next bus comes immediately,
+but e.g in 15 minutes, so append 15 as a third parameter.
+		
+example:
+	vrr unisuedost 5 10
+shows 5 lines of the very next possibilities in 10 minutes to
+get away from the stop \"UNI SÜDOST\", in a loop.\n"
+}
+
+# pipe wget output through grep, sed, tr and column to get desired output
+# like that of a true bus-stop terminal
+retrieve_and_show()
+{
+	echo $'\t'---== $MSG ==---
+	wget -q --output-document=- $URL |\
+		grep -e line -e dest -e time |\
+		sed -e 's/<div class=\"line\"> //' -e 's/<div class=\"dest\"> //' -e 's/<div class=\"time\"> //' -e 's/ <\/div>//' |\
+		tr '\n' '\t' |\
+		sed -e 's/ min/ min\n/g' -e 's/sofort/sofort\n/g' |\
+		sed -e 's/^[ \t]*//' |\
+		column -x -c 5 -ts $'\t' | head -c -1
+}
+
+# build the url for desired stop with lines and offset param
+build_url()
+{
+	case "$1" in
+		derendorfs)
+			URL="http://vrrf.finalrewind.org/duesseldorf/derendorf%20s.html?no_lines=$LINES&offset=$OFFSET&frontend=html&backend=db"
+			MSG="DERENDORF S" ;;
+		rather)
+			URL="http://vrrf.finalrewind.org/duesseldorf/rather%20stra%C3%9Fe.html?no_lines=$LINES&offset=$OFFSET&frontend=html&backend=db"
+			MSG="RATHER STRASSE" ;;
+		mooren)
+			URL="http://vrrf.finalrewind.org/duesseldorf/moorenstra%C3%9Fe.html?no_lines=$LINES&offset=$OFFSET&frontend=html&backend=db"
+			MSG="MOORENSTRASSE" ;;
+		oberbilk)
+			URL="http://vrrf.finalrewind.org/duesseldorf/oberbilk%20s.html?no_lines=$LINES&offset=$OFFSET&frontend=html&backend=db"
+			MSG="OBERBILK S" ;;
+		werstener)
+			URL="http://vrrf.finalrewind.org/duesseldorf/werstener%20dorfstra%C3%9Fe.html?no_lines=$LINES&offset=$OFFSET&frontend=html"
+			MSG="WERSTENER" ;;
+		hbf)
+			URL="http://vrrf.finalrewind.org/duesseldorf/hauptbahnhof.html?no_lines=$LINES&offset=$OFFSET&frontend=html&backend=db"
+			MSG="HBF" ;;
+		suedpark)
+			URL="http://vrrf.finalrewind.org/duesseldorf/s%C3%BCdpark.html?no_lines=$LINES&offset=$OFFSET&frontend=html&backend=db"
+			MSG="SÜDPARK" ;;
+		bilks)
+			URL="http://vrrf.finalrewind.org/duesseldorf/bilk%20s.html?no_lines=$LINES&offset=$OFFSET&frontend=html"
+			MSG="BILK S" ;;
+		volks)
+			URL="http://vrrf.finalrewind.org/duesseldorf/volksgarten%20s.html?no_lines=$LINES&offset=$OFFSET&frontend=html"
+			MSG="VOLKSGARTEN" ;;
+		unisuedost)
+			URL="http://vrrf.finalrewind.org/duesseldorf/Universit%C3%A4t%20S%C3%BCdost.html?no_lines=$LINES&offset=$OFFSET&frontend=html" 
+			MSG="UNI SÜDOST" ;;
+		unisued)
+			URL="http://vrrf.finalrewind.org/duesseldorf/uni%20s%C3%BCd.html?no_lines=$LINES&offset=$OFFSET&frontend=html" 
+			MSG="UNI SÜD" ;;
+		uniost)
+			URL="http://vrrf.finalrewind.org/duesseldorf/universitaet%20ost.html?no_lines=$LINES&offset=$OFFSET&frontend=html" 
+			MSG="UNI OST" ;;
+		help)
+			help_dialogue
+			exit 0 ;;
+		*)		echo Die Haltestelle kenne ich nicht 
+			exit 1 ;;
+	esac 
+}
+
+# main
+build_url $*
+# retrieve_and_show
+while :; do clear; retrieve_and_show; sleep 10; done

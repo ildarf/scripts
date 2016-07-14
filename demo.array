@@ -1,0 +1,16 @@
+#!/bin/bash
+
+declare -a strarr
+
+count=1
+for i in $*
+do
+	printf "%d: %s\n" "$count" "$i"
+	strarr[$count]=$i
+	(( count++ ))
+done
+
+for i in "${strarr[@]}"
+do
+	echo $i
+done

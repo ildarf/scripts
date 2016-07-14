@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+then
+	echo 'Usage: calendar startday endday month'
+	exit 0
+fi
+
+
+STARTDAY=$1
+ENDDAY=$2
+MONTH=$3
+for i in $(seq $STARTDAY $ENDDAY);
+do 
+	echo '{~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+	date --date="2015-$3-$i" +%a', '%d'.'%m'.'%G;
+done

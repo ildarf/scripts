@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ "$1" = "atab" ]
+then
+	switch=1
+	shift
+fi
+
+if [ $switch ]
+then
+	xdotool key alt+Tab
+else
+	echo false
+fi

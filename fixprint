@@ -1,0 +1,5 @@
+#!/bin/bash
+cancel -a
+cupsenable Officejet_4500_G510g-m
+sudo systemctl stop org.cups.cupsd
+sudo systemctl start org.cups.cupsd

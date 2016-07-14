@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [[ $1 == *.* && -n $2 ]]
+then
+	echo first param contains a dot, length of param 2 is nonzero
+else
+	echo no
+fi

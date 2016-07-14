@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ $# -eq 0 -o "$1" = "-h" ]
+then
+	echo 'Usage: demo.funcvars'
+	exit 0
+fi
+
+var="var"$1
+
+func_1()
+{
+	printf "function call with \$1: $1\n"
+}
+
+func_var()
+{
+	printf "function call without param: $var\n"
+	printf "that means that variables are visible inside functions
+no matter if they were omitted. see every var as global var\n"
+}
+
+func_1 $1
+func_var

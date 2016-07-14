@@ -1,0 +1,3 @@
+#!/bin/bash
+
+(x=`tput op` y=`printf %$22s`; for i in {0..256}; do o=00Si; echo -e `tput setaf $i; tput setab $i` ${y// /=}$x; done)

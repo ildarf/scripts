@@ -1,0 +1,19 @@
+#!/bin/bash
+
+Session="$(tmux display-message -p '#S')"
+Pane="$2"
+
+TmpFile="/tmp/tmux_omnipresent_$Session"
+# "$(tmux display-message -p '#D')"
+
+if [ "$1" = "set" ]; then
+  echo "$Pane" > "$TmpFile"
+  chmod u=rw "$TmpFile"
+  exit
+fi
+
+if [ "$1" = "update" ] && [ -f "$TmpFile" ]; then
+  Pane="$(cat "$TmpFile")"
+  tmux join-pane -bdh -s "$Pane" && tmux resize-pane -x 30 -t "$Pane"
+  exit 0
+fi

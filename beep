@@ -1,0 +1,2 @@
+#!/bin/bash
+aplay -q /home/ildar/Music/sounds/beep-07.wav

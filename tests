@@ -1,0 +1,50 @@
+#!/bin/bash
+
+## script switches params
+#echo "my name is" $(basename $0) "and i have" $# "parameters"
+#
+## if test $# -eq 2
+#if [ $# -eq 2 ]
+#then 
+#	echo $2 $1
+#else
+#	echo "wrong number of params"
+#fi
+#
+#if [ "$1" = "kacke" ]
+#then
+#	echo "hier ist kacke am dampfen!!"
+#fi
+#
+#if [ -n "$1" ]
+#then
+#	echo 1 is not empty
+#else
+#	echo 1 is empty
+#fi
+#
+#if [ -z "$1" ]
+#then
+#	echo 1 is empty
+#else
+#	echo 1 is not empty
+#fi
+
+echo ':: Verteilte Systeme'
+wget \
+	\ #--timestamping \
+	--no-clobber \
+	--execute robots=off \
+	\ #--no-directories \
+	--no-parent \
+	--no-host-directories \
+	--cut-dirs 3 \
+	--recursive \
+	--reject "*index.html*" \
+	--show-progress \
+	-q \
+	--no-verbose \
+	--user=student --password=bs4student \
+	--directory-prefix=/home/ildar/uni/verteilte_sys/ \
+	https://coconucos.cs.uni-duesseldorf.de/lehre/ws_1516/gvs/
+echo 'done'
