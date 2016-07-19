@@ -1,0 +1,53 @@
+#!/bin/bash
+
+#str='hallo@mail.com:sub~dir'
+#str='hallo@mail.com~dir'
+str='sub~dir'
+#str='hallo@mail.com:sub'
+#str='hallo@mail.com'
+#str='sub'
+
+from=`echo $str | awk -F '~' '{print $1}' | awk -F ':' '{print $1}'`
+sub=`echo $str | awk -F '~' '{print $1}' | awk -F ':' '{print $2}'`
+dir=`echo $str | awk -F '~' '{print $2}'`
+
+if [[ $from != *@* ]]
+then
+	sub=$from
+	from=""
+fi
+# 
+# if [[ -z $from  && -n $sub && $sub == *~* ]]
+# then
+# 	sub=`echo $str | awk -F '~' '{print $1}'`
+# 	dir=`echo $str | awk -F '~' '{print $2}'`
+# fi
+
+printf "str  : $str\n"
+echo
+printf "from : $from\n"
+printf "sub  : $sub \n"
+printf "dir  : $dir \n"
+
+echo
+
+if [[ $str == *@* ]]
+then
+	echo "it contains @"
+else
+	echo "doesn't contain"
+fi
+
+if [[ $str == *~* ]]
+then
+	echo "it contains ~"
+else
+	echo "doesn't contain"
+fi
+
+if [[ $str == *:* ]]
+then
+	echo "it contains :"
+else
+	echo "doesn't contain"
+fi

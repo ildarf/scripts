@@ -1,0 +1,270 @@
+#!/bin/bash
+
+# convert arguments into array, because whitespace in subject or dirname etc ...
+count=1
+for arg
+do
+	args[$count]=$arg
+	((count++))
+done
+
+sievec=/usr/lib/cyrus/bin/sievec
+
+helpmessage()
+{
+	printf "Usage:
+
+	newoxfilter -u <username> {-s <subject> | -f <from>}
+	[-d <dir> -rn <rulename> -rpo <rulepostfix -dpr <dirprefix>]
+
+Short syntax option:
+
+	newoxfilter -u <username> <from>:<subject>~<dir> ...
+	newoxfilter -u <username> <from>~<dir> ...
+	newoxfilter -u <username> <sub>~<dir> ...
+	newoxfilter -u <username> <from>:<subject> ...
+	newoxfilter -u <username> <from> ...
+	newoxfilter -u <username> <sub> ...
+
+Important note:
+
+	first argument must be the user. Then at least the subject or the
+	mail addres to filter for must be given
+	Please avoid dots in dirnames, because sieve treats them like slashes in
+	pathnames.
+
+Examples:
+
+	newoxfilter -u musteruser -f from@mail.com -s subject -d dirname
+		is equivalent to 
+	newoxfilter -u musteruser from@mail.com:subject~dirname
+		and creates the rule named from@mail.com:subject->dirname
+
+	newoxfilter -u musteruser -f from@mail.com -d dirname
+		is queivalent to
+	newoxfilter -u musteruser from@mail.com~dirname
+		and creates the rule named from@mail.com->dirname
+
+	newoxfilter -u musteruser -s subject -d dirname
+		is equivalent to 
+	newoxfilter -u musteruser subject~dirname
+		and creates the rule named subject->dirname
+
+	newoxfilter -u musteruser -f from@mail.com -s subject
+		is equivalent to 
+	newoxfilter -u musteruser from@mail.com:subject
+		and creates the rule named from@mail.com:subject->subject
+
+	newoxfilter -u musteruser -f from@mail.com
+		is queivalent to
+	newoxfilter -u musteruser from@mail.com
+		and creates the rule named from@mail.com->from@mail.com
+
+	newoxfilter -u musteruser -s subject
+		is equivalent to 
+	newoxfilter -u musteruser subject
+		and creates the rule named subject->subject
+"
+	exit 1
+}
+
+if [[ $# -eq 0 || $1 = --help || $1 = -h ]] &> /dev/null
+then
+	helpmessage
+fi
+
+get_max_id()
+{
+	# find location of Open-Xchange.script
+	user_backend=`get_user_backends -u $user | awk '{print $2}'`
+	oxpath=/var/lib/cyrus-imapd/sieve/${user:0:1}/$user
+
+	# get the current max_id used in Open-Xchange.script by bash-magic
+	max_id=`ssh $user_backend cat $oxpath/Open-Xchange.script | \
+		grep "|UniqueId:" | \
+		sort -n -t : -k 3 | \
+		tail -n 1 | \
+		awk -F "|" '{print $2}' | \
+		awk -F ":" '{print $2}'`
+}
+
+processargs()
+{
+	# in case not all possible parameters were given, this function
+	# determines the suitable content for the missing parameters
+	# and creates a speaking rulename of not given
+
+	# first case: 
+	if [[ -n $subject && -n $dir && -n $from && -z $rulename ]]
+	then
+		rulename="$from:$subject->$dir"
+	fi
+
+	if [[ -n $subject && -n $dir && -z $from && -z $rulename ]]
+	then
+		rulename="$subject->$dir"
+	fi
+
+	if [[ -z $subject && -n $dir && -n $from && -z $rulename ]]
+	then
+		rulename="$from->$dir"
+	fi
+
+	if [[ -n $subject && -z $dir && -n $from && -z $rulename ]]
+	then
+		dir=$subject
+		rulename="$from:$subject->$dir"
+	fi
+
+	if [[ -n $subject && -z $dir && -z $from && -z $rulename ]]
+	then
+		dir=$subject
+		rulename="$subject->$dir"
+	fi
+
+	if [[ -z $subject && -z $dir && -n $from && -z $rulename ]]
+	then
+		dir=`echo $from | sed 's/\./_/g'`
+		rulename="$from->$dir"
+	fi
+
+	# if there are prefixes given, attach them at the right place
+	if [[ -n $rulepostfix ]]
+	then
+		rulename="$rulename:$rulepostfix"
+	fi
+
+	if [[ -n $ruleprefix ]]
+	then
+		rulename="$ruleprefix:$rulename"
+	fi
+
+	if [[ -n $dir && -n $dirprefix ]]
+	then
+		dir="$dirprefix.$dir"
+	fi
+
+	# if no subject of sender address given, abort
+	if [[ -z $subject && -z $from ]]
+	then
+		echo "a subject or at least a sender address must be given"
+		helpmessage
+	fi
+}
+
+newgeneralfilter()
+{
+	id=$((max_id+1))
+	printf "## Flag: |UniqueId:$id|Rulename: $rulename\n"
+
+	# if there is a sender address, print the "from" part
+	if [[ -n $from ]]
+	then
+		printf "if allof ( header :contains \"From\" \"$from\" "
+		# if there is additionally a subject, add this "subject" part, too
+		if [[ -n $subject ]]
+		then
+			printf ", header :contains \"Subject\" \"$subject\" "
+		fi
+	# if there was no sender address, but a subject given, print only the "subject" part
+	elif [[ -n $subject ]]
+	then
+		printf "if allof ( header :contains \"Subject\" \"$subject\" "
+	fi
+	# in both cases, finish this line with a bracket and a newline
+	printf ")\n"
+
+	printf "{\n"
+	printf "	fileinto \"INBOX.$dir\" ;\n"
+	printf "}\n\n"
+}
+
+get_args_and_process()
+{
+	# fist argument must be the user, else print help and abort
+	if [[ ${args[1]} = -u || ${args[1]} = --user ]]
+	then
+		user=${args[2]}
+		args=("${args[@]:2}")
+	else
+		helpmessage
+	fi
+	
+	# now read in the mail-filter relevant stuff in a loop to process more 
+	# than one rule at once
+	for i in `seq 1 $((${#args[@]}-1))`
+	do
+		dir=""
+		subject=""
+		from=""
+		rulename=""
+		if [[ ${args[1]} = -h ]]
+		then
+			helpmessage
+			exit 0
+		fi
+		if [[ ${args[1]} = -d || ${args[1]} = --directory ]]
+		then
+			dir=${args[2]}
+			args=("${args[@]:2}")
+		fi
+		if [[ ${args[1]} = -s || ${args[1]} = --subject ]]
+		then
+			subject=${args[2]}
+			args=("${args[@]:2}")
+		fi
+		if [[ ${args[1]} = -f || ${args[1]} = --from ]]
+		then
+			from=${args[2]}
+			args=("${args[@]:2}")
+		fi
+		if [[ ${args[1]} = -rn || ${args[1]} = --rulename ]]
+		then
+			rulename=${args[2]}
+			args=("${args[@]:2}")
+		fi
+		if [[ ${args[1]} = -rpo || ${args[1]} = --rulepostfix ]]
+		then
+			rulepostfix=${args[2]}
+			args=("${args[@]:2}")
+		fi
+		if [[ ${args[1]} = -rpr || ${args[1]} = --ruleprefix ]]
+		then
+			ruleprefix=${args[2]}
+			args=("${args[@]:2}")
+		fi
+		if [[ ${args[1]} = -dpr || ${args[1]} = --dirprefix ]]
+		then
+			dirprefix=${args[2]}
+			args=("${args[@]:2}")
+		fi
+		if [[ ${args[1]} != -* ]] # if first char is not a "-" then short syntax was chosen
+		then
+			#echo short syntax ${args[1]}
+			from=`echo ${args[1]} | awk -F '~' '{print $1}' | awk -F ':' '{print $1}'`
+			subject=`echo ${args[1]} | awk -F '~' '{print $1}' | awk -F ':' '{print $2}'`
+			dir=`echo ${args[1]} | awk -F '~' '{print $2}'`
+
+			if [[ $from != *@* ]]
+			then
+				subject=$from
+				from=""
+			fi
+			args=("${args[@]:1}")
+		fi
+		get_max_id
+		processargs
+		#echo user:		$user
+		#echo from:		$from
+		#echo subject:	$subject
+		#echo dirname:	$dir
+		#echo rulename:	$rulename
+		#newgeneralfilter
+		newgeneralfilter | tee /dev/stderr | ssh $user_backend "cat >> $oxpath/Open-Xchange.script"
+	done
+	# echo \#args ${#args[@]}
+}
+
+get_args_and_process
+
+ssh $user_backend $sievec $oxpath/Open-Xchange.{script,bc}

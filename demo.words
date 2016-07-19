@@ -1,0 +1,14 @@
+#!/bin/bash
+
+str="1924 435 45 "
+
+echo $str
+
+sec=`echo $str | awk '{print $2}'`
+
+if [[ -n $sec ]]
+then
+	echo $sec
+else
+	echo there is no sec arg
+fi

@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# not necessary
+# declare -a args
+
+# fill args array with arguments from command line 
+count=1
+for arg
+do
+	args[$count]=$arg
+	# echo $arg
+	((count++))
+done
+
+# print array
+# echo ${args[@]}
+
+# print array after second element
+# echo ${args[@]:2}
+
+# assigning nothing to fist element of array
+# unset args[1]
+# echo ${args[@]}
+
+# echo elements of array
+# echo num:${#args[@]}
+# for i in `seq 1 ${#args[@]}`
+# do
+# 	echo ${args[$i]}
+# done
+
+# shifting array
+# args=("${args[@]:1}")
+# echo
+
+# echo num:${#args[@]}
+# for i in `seq 1 ${#args[@]}`
+# do
+# 	echo ${args[$i]}
+# done
+
+get_args()
+{
+	if [[ ${args[1]} -eq ${args[1]} ]] &> /dev/null
+	then
+		id=${args[1]}
+		args=("${args[@]:1}")
+		echo arg1 is an integer
+	else
+		echo arg1 is not an integer
+	fi
+	a1=${args[1]}
+	args=("${args[@]:1}")
+	a2=${args[1]}
+	args=("${args[@]:1}")
+	a3=${args[1]}
+
+}
+
+# trying to pass the args array to a function
+# and to echo one element per line in this func
+get_args 
+
+echo id is $id
+echo a1 $a1
+echo a2 $a2
+echo a3 $a3

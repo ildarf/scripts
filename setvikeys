@@ -1,0 +1,3 @@
+#!/bin/bash
+
+tmux send-keys "set -o vi" Enter

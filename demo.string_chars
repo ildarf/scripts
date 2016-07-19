@@ -1,0 +1,27 @@
+#!/bin/bash
+
+str="some/dir/file"
+
+# wildcards
+if [[ $str == /* ]]
+then
+	echo first char is a slash
+else
+	echo first char is not a slash
+fi
+
+# substring expansion
+if [[ ${str:0:1} == "/" ]]
+then
+	echo first char is a slash
+else
+	echo first char is not a slash
+fi
+
+# regex
+if [[ $str =~ ^/ ]]
+then
+	echo first char is a slash
+else
+	echo first char is not a slash
+fi

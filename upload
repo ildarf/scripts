@@ -1,0 +1,3 @@
+#!/bin/bash
+
+scp newoxfilter fatkullin@uzziel:~ && ssh fatkullin@uzziel scp newoxfilter cyrus-fe1:~/bin

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]]
+then
+	echo "Usage: newoxfilter lastidnum list"
+fi
+
+n=$1
+file=$2
+
+cat $file | while read name; do ((n=n+1)); newoxfilter -p $n $name; done
