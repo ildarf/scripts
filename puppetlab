@@ -24,5 +24,10 @@ tmux send-keys -t 1 "ssh puppetmaster1" Enter
 tmux send-keys -t 2 "ssh puppetslave1" Enter
 tmux send-keys -t 3 "ssh puppetslave2" Enter
 
+tmux send-keys -t 0 "set -o vi" Enter
+tmux send-keys -t 1 "set -o vi" Enter
+tmux send-keys -t 2 "set -o vi" Enter
+tmux send-keys -t 3 "set -o vi" Enter
+
 tmux select-pane -t $orig_pane
 

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+tmux send-keys "uzziel" Enter
+tmux send-keys "ssh gate-devlab" Enter
+tmux send-keys "ssh puppetslave2" Enter
+tmux send-keys "set -o vi" Enter
+
