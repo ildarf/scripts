@@ -10,10 +10,10 @@ tmux select-pane -t $orig_pane
 tmux split-window -v 
 # tmux select-pane -t 0
 
-tmux send-keys -t 0 "uzziel" Enter
-tmux send-keys -t 1 "uzziel" Enter
-tmux send-keys -t 2 "uzziel" Enter
-tmux send-keys -t 3 "uzziel" Enter
+tmux send-keys -t 0 "ssh root@uzziel-dev" Enter
+tmux send-keys -t 1 "ssh root@uzziel-dev" Enter
+tmux send-keys -t 2 "ssh root@uzziel-dev" Enter
+tmux send-keys -t 3 "ssh root@uzziel-dev" Enter
 
 tmux send-keys -t 0 "ssh gate-devlab" Enter
 tmux send-keys -t 1 "ssh gate-devlab" Enter
