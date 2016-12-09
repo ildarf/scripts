@@ -1,0 +1,8 @@
+#!/bin/bash
+
+last_num=`ls ~/uni/sto/blatt | awk -F "[^0-9]*" '{print $2}' | sort | tail -n 1`
+new_blatt="blatt$((++last_num)).pdf"
+echo $new_blatt
+
+curl -u student:stoch1617 -o ~/uni/sto/blatt/$new_blatt http://www.math.uni-duesseldorf.de/~stoch/lehrveran-Dateien/WS16_17/Stochastik/Uebungsblaetter/$new_blatt && \
+evince ~/uni/sto/blatt/$new_blatt& &> /dev/null
