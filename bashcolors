@@ -100,16 +100,16 @@ colors[31]='\e[46;34m'
 colors[32]='\e[46;35m'
 colors[33]='\e[46;37m'
 
-# for i in {40..47}
-# do
-# 	for j in {30..37}
-# 	do
-# 		printf "\\\e[${i};${j}m: \e[${j};${i}msome different bg colors tried with different fg colors\e[0m\n"
-# 	done
-# done
-
-for i in {1..20}
+for i in {40..47}
 do
-	# col="${colors[$((RANDOM%34))]}"
-	printf "${colors[$((RANDOM%34))]}random color text\e[0m\n"
+	for j in {30..37}
+	do
+		printf "\\\e[${i};${j}m: \e[${j};${i}msome different bg colors tried with different fg colors\e[0m\n"
+	done
 done
+
+# for i in {1..20}
+# do
+# 	# col="${colors[$((RANDOM%34))]}"
+# 	printf "${colors[$((RANDOM%34))]}random color text\e[0m\n"
+# done
