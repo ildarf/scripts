@@ -1,0 +1,41 @@
+#!/bin/bash
+
+askphrase ()
+{
+    phrase="$1"
+    default=$2
+
+    if [ -z $default ]
+    then
+        default=y
+    fi
+
+    printf "%s " "$phrase"
+    if [ "$default" = "y" ]
+    then
+        printf "(Y|n)? "
+    else
+        printf "(y|N)? "
+    fi
+
+    read answer
+
+    if [ -z $answer ]
+    then
+        answer=$default
+    fi
+
+    case $answer in
+        y|Y)
+            return 0
+            ;;
+        n|N)
+            return 1
+            ;;
+        *)
+            askphrase "$phrase" "$default"
+            ;;
+    esac
+}
+
+askphrase "$1" $2
