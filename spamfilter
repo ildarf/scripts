@@ -1,13 +1,9 @@
 #!/bin/bash
 
 tmux send-keys "uzziel" Enter
-tmux send-keys "ssh cyrus-be5" Enter
+tmux send-keys "./bin/spamfilter" Enter
 tmux send-keys "set -o vi" Enter
-tmux send-keys "awk -F\"|\" '/|UniqueId:/ { print \$2 }' /var/lib/cyrus-imapd/sieve/f/fatkullin/Open-Xchange.script | sort -n -t: -k2 | tail -n1" Enter
-tmux send-keys "sleep 1" Enter
-tmux send-keys "vim /var/lib/cyrus-imapd/sieve/f/fatkullin/Open-Xchange.script" Enter
+tmux send-keys "./bin/spamfilter fatkullin" Enter
 tmux send-keys "/)" Enter
 tmux send-keys "i, header :contains \"\" \"\"" Escape
 tmux send-keys "F,yt)f\"a"
-
-# ssh $user_backend $sievec $oxpath/Open-Xchange.{script,bc}
