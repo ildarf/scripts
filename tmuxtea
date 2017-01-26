@@ -1,0 +1,6 @@
+#!/bin/bash
+
+num=`tmux display-message -p '#P'`
+tmux split-window -l 6 -b
+tmux select-pane -t $((num+1))
+tmux send-keys "tea" Enter
