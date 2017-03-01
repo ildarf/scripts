@@ -1,6 +1,6 @@
 #!/bin/bash
 
 tmux send-keys "uzziel" Enter
-tmux send-keys "ssh postgres" Enter
+tmux send-keys "./bin/ccard" Enter
 tmux send-keys "set -o vi" Enter
 tmux send-keys "bin/ccard "

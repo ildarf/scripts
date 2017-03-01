@@ -1,6 +1,6 @@
 #!/bin/bash
 
 tmux send-keys "uzziel" Enter
-tmux send-keys "ssh smtp1" Enter
+tmux send-keys "./bin/padd" Enter
 tmux send-keys "set -o vi" Enter
 tmux send-keys "padd "
