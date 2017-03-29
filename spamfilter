@@ -4,6 +4,7 @@ tmux send-keys "uzziel" Enter
 tmux send-keys "./bin/spamfilter" Enter
 tmux send-keys "set -o vi" Enter
 tmux send-keys "./bin/spamfilter fatkullin" Enter
+tmux send-keys "/|UniqueId:1|" Enter
 tmux send-keys "/)" Enter
 tmux send-keys "i, header :contains \"\" \"\"" Escape
 tmux send-keys "F,yt)f\"a"
