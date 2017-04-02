@@ -1,7 +1,24 @@
 #!/bin/bash
 
-#arglist="$@"
+max=100
 
-arglist="-fn droid $@"
+declare -a ops
+ops[0]="+"
+ops[1]="-"
+ops[2]="*"
 
-echo $arglist
+opnum=$(( RANDOM % 3 ))
+
+a=$(( RANDOM % $max ))
+b=$(( RANDOM % ($max / 10) ))
+
+c=$(( a ${ops[$opnum]} b ))
+
+echo -n "$a ${ops[$opnum]} $b = "
+read res
+if [[ $c -eq $res ]]
+then
+	echo "right!"
+else
+	echo "wrong! the answer was $c"
+fi
