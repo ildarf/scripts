@@ -1,0 +1,7 @@
+#!/bin/bash
+
+tmux send-keys 'L' && \
+tmux send-keys '1' C-G && \
+tmux copy-mode && \
+tmux send-keys 'j0lvt"y' && \
+tmux send-keys C-O 
