@@ -1,7 +1,15 @@
 #!/bin/bash
 
-echo $@
-echo $*
-echo $#
-echo $0
-echo $1
+# user=`cat /proc/stat | head -n 1 | awk '{print $2}'`
+# user= `head -n 1 /proc/stat | awk '{print $2}'`
+# user=$(head -n 1 /proc/stat | awk '{print $2}')
+# nice=$(head -n 1 /proc/stat | awk '{print $3}')
+# system=$(head -n 1 /proc/stat | awk '{print $4}')
+
+# cat /proc/stat | head -1
+# user=$(head -n 1 /proc/stat | cut -d' ' -f 3)
+# echo $user
+
+sum=$(( 5/3 ))
+echo $sum
+

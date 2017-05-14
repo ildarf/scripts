@@ -1,16 +1,31 @@
 #!/bin/bash
 
-max=100
+max=90
+
+random()
+{
+	von=$1
+	bis=$2
+	rnd=$(( (RANDOM % ($bis-$von+1)) + $von ))
+
+	echo $rnd
+}
 
 declare -a ops
 ops[0]="+"
 ops[1]="-"
 ops[2]="*"
+ops[3]="/"
 
-opnum=$(( RANDOM % 3 ))
+opnum=`random 0 2`
 
-a=$(( RANDOM % $max ))
-b=$(( RANDOM % ($max / 10) ))
+a=`random 11 99`
+if [[ $opnum -eq 2 ]]
+then
+	b=`random 2 9`
+else
+	b=`random 11 99`
+fi
 
 c=$(( a ${ops[$opnum]} b ))
 
@@ -22,3 +37,6 @@ then
 else
 	echo "wrong! the answer was $c"
 fi
+
+# b=`random 7 9`
+# echo -n "$b "
