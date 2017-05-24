@@ -1,42 +1,21 @@
 #!/bin/bash
 
-max=90
+if [ $# -eq 0 -o "$1" = "--help" -o "$1" = "-h" ]
+then
+	echo 'Usage: testscript'
+	exit 0
+fi
 
-random()
+get_args()
 {
-	von=$1
-	bis=$2
-	rnd=$(( (RANDOM % ($bis-$von+1)) + $von ))
-
-	echo $rnd
+	for i in $*
+	do
+		if [ "$1" = "-h" ]
+		then
+		echo 'Usage: testscript'
+			exit 0
+		fi
+	done
 }
 
-declare -a ops
-ops[0]="+"
-ops[1]="-"
-ops[2]="*"
-ops[3]="/"
-
-opnum=`random 0 2`
-
-a=`random 11 99`
-if [[ $opnum -eq 2 ]]
-then
-	b=`random 2 9`
-else
-	b=`random 11 99`
-fi
-
-c=$(( a ${ops[$opnum]} b ))
-
-echo -n "$a ${ops[$opnum]} $b = "
-read res
-if [[ $c -eq $res ]]
-then
-	echo "right!"
-else
-	echo "wrong! the answer was $c"
-fi
-
-# b=`random 7 9`
-# echo -n "$b "
+get_args $*
