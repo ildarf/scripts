@@ -1,0 +1,19 @@
+#!/bin/bash
+
+current_id=`xprop -root 32x '\t$0' _NET_ACTIVE_WINDOW | cut -f 2`
+current_name=`xprop -id $current_id  WM_NAME | awk -F'"' '{print $2}'`
+
+# mod4+b jumps to browser
+# if terminal is already focused,
+# focus previous window kk
+# get window class: xprop
+
+if [[ "$current_name" =~ .*\.pdf$ ]]
+then # jump to the last window with id saved in file
+	previous_id=`cat ~/.config/i3/previous_id`
+	i3-msg [id=$previous_id] focus
+else # if terminal is not selected, save the previous_id and jump to the terminal
+	echo $current_id > ~/.config/i3/previous_id
+	i3-msg [class="Zathura"] focus
+fi
+

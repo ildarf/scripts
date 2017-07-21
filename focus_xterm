@@ -3,7 +3,7 @@
 current_id=`xprop -root 32x '\t$0' _NET_ACTIVE_WINDOW | cut -f 2`
 current_name=`xprop -id $current_id  WM_NAME | awk -F'"' '{print $2}'`
 
-# mod4+x jumps to the terminal
+# mod4+x jumps to terminal
 # if terminal is already focused,
 # focus previous window kk
 

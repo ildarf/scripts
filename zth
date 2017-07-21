@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ ! -s /tmp/tabbed.xid ]; then
+    tabbed -dc > /tmp/tabbed.xid
+fi
+
+# Disgusting use of `cat`?
+zathura -e $(cat /tmp/tabbed.xid)
